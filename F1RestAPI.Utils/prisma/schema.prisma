@@ -1,0 +1,65 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Constructors {
+    ConstructorId      Int                  @id(map: "PK_Constructors") @default(autoincrement())
+    ConstructorRef     String
+    Name               String
+    Nationality        String
+    Url                String
+    DriverConstructors DriverConstructors[]
+}
+
+model DriverConstructors {
+    Year          Int
+    ConstructorId Int
+    DriverId      Int
+    Constructors  Constructors @relation(fields: [ConstructorId], references: [ConstructorId], onDelete: Cascade, onUpdate: NoAction, map: "FK_DriverConstructors_Constructors_ConstructorId")
+    Drivers       Drivers      @relation(fields: [DriverId], references: [DriverId], onDelete: Cascade, onUpdate: NoAction, map: "FK_DriverConstructors_Drivers_DriverId")
+
+    @@id([DriverId, ConstructorId, Year], map: "PK_DriverConstructors")
+    @@index([ConstructorId], map: "IX_DriverConstructors_ConstructorId")
+}
+
+model Drivers {
+    DriverId           Int                  @id(map: "PK_Drivers") @default(autoincrement())
+    DriverRef          String
+    DriverNumber       Int
+    DriverCode         String               @db.VarChar(3)
+    DriverForename     String
+    DriverSurname      String
+    DateOfBirth        DateTime             @db.Timestamptz(6)
+    Nationality        String
+    WikipediaUrl       String
+    PolePositions      Int
+    Wins               Int
+    Podiumns           Int
+    DNF                Int
+    DriverConstructors DriverConstructors[]
+}
+
+model IpConnectionCounts {
+    Ip    String @id(map: "PK_IpConnectionCounts")
+    Count Int
+}
+
+model IpCountryStates {
+    Country String
+    City    String
+    Count   Int
+
+    @@id([Country, City], map: "PK_IpCountryStates")
+}
+
+model EFMigrationsHistory {
+    MigrationId    String @id(map: "PK___EFMigrationsHistory") @db.VarChar(150)
+    ProductVersion String @db.VarChar(32)
+
+    @@map("__EFMigrationsHistory")
+}

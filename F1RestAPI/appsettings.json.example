@@ -1,0 +1,15 @@
+{
+    "ConnectionStrings": {
+        "DefaultConnection": "Host=localhost;Database=example_db;Username=example_user;Password=example_password;Pooling=true;MinPoolSize=2;MaxPoolSize=10;"
+    },
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "AllowedHosts": "*",
+    "Jwt": {
+        "SecretKey": "your_secret_key_here"
+    }
+}
